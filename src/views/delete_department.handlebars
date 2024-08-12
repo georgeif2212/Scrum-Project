@@ -1,0 +1,38 @@
+<form id="deleteDepartmentForm">
+  <div>
+    <label for="keyDepartment">Clave del Producto:</label>
+    <input type="text" id="keyDepartment" name="keyDepartment" required />
+  </div>
+  <div>
+    <button type="submit">Dar de Baja</button>
+  </div>
+</form>
+
+<script>
+  document.getElementById('deleteDepartmentForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
+    
+    const keyDepartment = document.getElementById('keyDepartment').value;
+
+    try {
+      const response = await fetch('/api/departments', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ keyDepartment })
+      });
+
+      if (response.status === 204) {
+        alert('Departamento eliminado exitosamente.');
+      } else if (response.status === 404) {
+        alert('Departamento no encontrado.');
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error}`);
+      }
+    } catch (error) {
+      alert('Hubo un error al eliminar el departamento. Inténtalo de nuevo más tarde.');
+    }
+  });
+</script>
