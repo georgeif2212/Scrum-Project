@@ -1,15 +1,15 @@
-<form action="api/departments" method="post">
+<form action="http://localhost:8080/api/departments" method="post">
   <div>
-    <label for="nombre">Nombre del Departamento:</label>
-    <input type="text" id="nombre" name="nombre" required />
+    <label for="Nombre">Nombre del Departamento:</label>
+    <input type="text" id="name" name="name" required />
   </div>
   <div>
-    <label for="proveedor">Responsable del departamento:</label>
-    <input type="text" id="proveedor" name="proveedor" required />
+    <label for="Responsable">Responsable del departamento:</label>
+    <input type="text" id="personInCharge" name="personInCharge" required />
   </div>
   <div>
     <label for="Clave del departamento">Clave del departamento:</label>
-    <input type="text" id="key" name="key" required />
+    <input type="text" id="keyDepartment" name="keyDepartment" required />
   </div>
   <div>
     <button type="submit">Dar de Alta</button>
