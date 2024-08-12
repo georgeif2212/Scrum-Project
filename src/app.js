@@ -4,6 +4,8 @@ import path from 'path';
 
 import indexRouter from './routers/views/index.router.js';
 import productsRouter from './routers/api/products.router.js';
+import productsViewsRouter from './routers/views/products.router.js';
+
 import { __dirname } from './utils.js';
 
 const app = express();
@@ -15,7 +17,7 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
 
-app.use('/', indexRouter);
+app.use('/', indexRouter,productsViewsRouter);
 app.use('/api', productsRouter);
 
 app.use((error, req, res, next) => {
