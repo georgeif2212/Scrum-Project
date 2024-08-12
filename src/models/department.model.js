@@ -6,4 +6,4 @@ const departmentSchema = new Schema({
   personInCharge: { type: String, required: true },
 }, { timestamps: true });
 
-export default mongoose.model('Product', departmentSchema);
+export default mongoose.model('Department', departmentSchema);
