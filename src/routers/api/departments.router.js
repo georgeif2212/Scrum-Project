@@ -1,9 +1,9 @@
-import { Router } from 'express';
-import DepartmentModel from '../../models/department.model.js';
+import { Router } from "express";
+import DepartmentModel from "../../models/department.model.js";
 
 const router = Router();
 
-router.get('/departments', async (req, res, next) => {
+router.get("/departments", async (req, res, next) => {
   try {
     const departments = await DepartmentModel.find({});
     res.status(200).json(departments);
@@ -12,12 +12,16 @@ router.get('/departments', async (req, res, next) => {
   }
 });
 
-router.get('/departments/:uid', async (req, res, next) => {
+router.get("/departments/:uid", async (req, res, next) => {
   try {
-    const { params: { uid } } = req;
+    const {
+      params: { uid },
+    } = req;
     const department = await DepartmentModel.findById(uid);
     if (!department) {
-      return res.status(401).json({ message: `department id ${uid} not found 😨.` });
+      return res
+        .status(401)
+        .json({ message: `department id ${uid} not found 😨.` });
     }
     res.status(200).json(department);
   } catch (error) {
@@ -25,7 +29,7 @@ router.get('/departments/:uid', async (req, res, next) => {
   }
 });
 
-router.post('/departments/', async (req, res, next) => {
+router.post("/departments/", async (req, res, next) => {
   try {
     const { body } = req;
     const department = await DepartmentModel.create(body);
@@ -35,9 +39,12 @@ router.post('/departments/', async (req, res, next) => {
   }
 });
 
-router.put('/departments/:uid', async (req, res, next) => {
+router.put("/departments/:uid", async (req, res, next) => {
   try {
-    const { body, params: { uid } } = req;
+    const {
+      body,
+      params: { uid },
+    } = req;
     await DepartmentModel.updateOne({ _id: uid }, { $set: body });
     res.status(204).end();
   } catch (error) {
@@ -45,10 +52,25 @@ router.put('/departments/:uid', async (req, res, next) => {
   }
 });
 
-router.delete('/departments/:uid', async (req, res, next) => {
+router.delete("/departments", async (req, res, next) => {
   try {
-    const { params: { uid } } = req;
-    await DepartmentModel.deleteOne({ _id: uid });
+    // Obtiene la keyDepartment del cuerpo de la solicitud
+    const { keyDepartment } = req.body;
+
+    // Valida que keyDepartment esté presente
+    if (!keyDepartment) {
+      return res
+        .status(400)
+        .json({ error: "La clave del departamento es requerida" });
+    }
+
+    // * Elimina el departamento usando keyDepartment
+    const result = await DepartmentModel.deleteOne({ keyDepartment });
+
+    // Si no se encuentra el departamento
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Departamento no encontrado" });
+    }
     res.status(204).end();
   } catch (error) {
     next(error);
