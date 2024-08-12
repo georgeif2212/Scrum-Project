@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <th>Clave del departamento</th>
+      <th>Departamento</th>
+      <th>Responsable</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each departments}}
+      <tr>
+        <td>{{this.keyDepartment}}</td>
+        <td>{{this.name}}</td>
+        <td>{{this.personInCharge}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
