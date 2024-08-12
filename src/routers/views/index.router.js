@@ -15,4 +15,8 @@ router.get("/products-main", (req, res) => {
   res.render("products_menu", { title: "Menu de productos 🖐️" });
 });
 
+router.get("/departments-main", (req, res) => {
+  res.render("departments_menu", { title: "Menu de productos 🖐️" });
+});
+
 export default router;
