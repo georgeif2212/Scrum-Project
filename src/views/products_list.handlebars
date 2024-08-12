@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Producto</th>
+      <th>Proveedor</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each products}}
+      <tr>
+        <td>{{this._id}}</td>
+        <td>{{this.nombre}}</td>
+        <td>{{this.proveedor}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
