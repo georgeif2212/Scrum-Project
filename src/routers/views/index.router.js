@@ -8,19 +8,23 @@ router.get("/", (req, res) => {
 });
 
 router.get("/main", (req, res) => {
-  res.render("main", { title: "Menu principal 🖐️" });
+  res.render("./menus/main", { title: "Menu principal 🖐️" });
 });
 
 router.get("/products-main", (req, res) => {
-  res.render("products_menu", { title: "Menu de productos 🖐️" });
+  res.render("./menus/products_menu", { title: "Menu de productos 🖐️" });
 });
 
 router.get("/departments-main", (req, res) => {
-  res.render("departments_menu", { title: "Menu de productos 🖐️" });
+  res.render("./menus/departments_menu", { title: "Menu de productos 🖐️" });
 });
 
 router.get("/product-to-departments", (req, res) => {
-  res.render("assign_productToDepartment_menu", { title: "Alta o baja de un departamento 🖐️" });
+  res.render("./menus/assign_productToDepartment_menu", { title: "Alta o baja de un departamento 🖐️" });
+});
+
+router.get("/prices-product", (req, res) => {
+  res.render("./menus/prices_menu", { title: "Menu de precios 🤑" });
 });
 
 export default router;
