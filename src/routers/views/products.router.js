@@ -30,4 +30,8 @@ router.get("/delete/products/department", (req, res) => {
   res.render("./products/delete_product_to_department", { title: "Baja de productos a departamento🖐️" });
 });
 
+router.get("/products/assign-price", (req, res) => {
+  res.render("./products/assign_price_to_product", { title: "Asignar precio a producto 💰" });
+});
+
 export default router;
