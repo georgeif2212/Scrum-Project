@@ -19,4 +19,8 @@ router.get("/departments-main", (req, res) => {
   res.render("departments_menu", { title: "Menu de productos 🖐️" });
 });
 
+router.get("/product-to-departments", (req, res) => {
+  res.render("assign_productToDepartment_menu", { title: "Alta o baja de un departamento 🖐️" });
+});
+
 export default router;
