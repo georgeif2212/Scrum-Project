@@ -1,0 +1,18 @@
+<form action="/api/products/assignPrice" method="post">
+  <h2>Asignar Precio</h2>
+  <div>
+    <label for="keyDepartment">Clave del Departamento:</label>
+    <input type="text" id="keyDepartment" name="keyDepartment" required />
+  </div>
+  <div>
+    <label for="idProduct">ID del Producto:</label>
+    <input type="text" id="idProduct" name="idProduct" required />
+  </div>
+  <div>
+    <label for="price">Precio:</label>
+    <input type="number" step="0.01" id="price" name="price" required />
+  </div>
+  <div>
+    <button type="submit">Asignar Precio</button>
+  </div>
+</form>
