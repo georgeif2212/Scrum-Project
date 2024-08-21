@@ -22,5 +22,12 @@ router.get("/delete/products", (req, res) => {
 });
 
 
+router.get("/update/products/department", (req, res) => {
+  res.render("update_product_to_department", { title: "Alta de productos a departamento🖐️" });
+});
+
+router.get("/delete/products/department", (req, res) => {
+  res.render("delete_product_to_department", { title: "Baja de productos a departamento🖐️" });
+});
 
 export default router;
