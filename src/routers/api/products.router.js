@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import ProductModel from '../../models/product.model.js';
+import DepartmentModel from '../../models/department.model.js';
+import mongoose from 'mongoose';
 
 const router = Router();
 
@@ -50,6 +52,34 @@ router.delete('/products/:uid', async (req, res, next) => {
     const { params: { uid } } = req;
     await ProductModel.deleteOne({ _id: uid });
     res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/products/toDepartment', async (req, res, next) => {
+  try {
+    const { idProduct, keyDepartment } = req.body;
+    if (!mongoose.Types.ObjectId.isValid(idProduct)) {
+      return res.status(400).json({ message: 'ID del producto no es válido.' });
+    }
+    const department = await DepartmentModel.findOne({ keyDepartment });
+    if (!department) {
+      return res.status(404).json({ message: 'Clave del departamento no encontrada.' });
+    }
+
+
+    const product = await ProductModel.findById(idProduct);
+    if (!product) {
+      return res.status(404).json({ message: 'Id del producto no encontrada.' });
+    }
+    
+    await ProductModel.updateOne(
+      { _id: idProduct },
+      { $set: { keyDepartment, price: -1 } }
+    );
+
+    res.status(200).json({ message: 'Producto asignado al departamento correctamente.' });
   } catch (error) {
     next(error);
   }
