@@ -85,4 +85,43 @@ router.post('/products/toDepartment', async (req, res, next) => {
   }
 });
 
+
+router.post('/delete/products/toDepartment', async (req, res, next) => {
+  try {
+    const { idProduct, keyDepartment } = req.body;
+
+    // Verificar si el idProduct es un ObjectId válido
+    // if (!mongoose.isValidObjectId(idProduct)) {
+    //   return res.status(400).json({ message: 'ID del producto no es válido.' });
+    // }
+
+    // Convertir idProduct a ObjectId
+    // const productId = mongoose.Types.ObjectId(idProduct);
+
+    // Verificar si el departamento existe
+    const department = await DepartmentModel.findOne({ keyDepartment });
+    if (!department) {
+      return res.status(404).json({ message: 'Clave del departamento no encontrada.' });
+    }
+
+    // Verificar si el producto existe y pertenece al departamento
+    const product = await ProductModel.findOne({ _id: idProduct, keyDepartment });
+    if (!product) {
+      return res.status(404).json({ message: 'Producto no encontrado en el departamento especificado.' });
+    }
+
+    // Eliminar la asociación del producto con el departamento (borrar keyDepartment)
+    await ProductModel.updateOne(
+      { _id: idProduct },
+      { $unset: { keyDepartment: "" } }
+    );
+
+    res.status(200).json({ message: 'Asociación del producto con el departamento eliminada exitosamente.' });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
 export default router;
