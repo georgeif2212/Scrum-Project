@@ -23,4 +23,8 @@ router.get("/product-to-departments", (req, res) => {
   res.render("./menus/assign_productToDepartment_menu", { title: "Alta o baja de un departamento 🖐️" });
 });
 
+router.get("/prices-product", (req, res) => {
+  res.render("./menus/prices_menu", { title: "Menu de precios 🤑" });
+});
+
 export default router;
