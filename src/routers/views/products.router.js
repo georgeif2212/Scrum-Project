@@ -34,4 +34,8 @@ router.get("/products/assign-price", (req, res) => {
   res.render("./products/assign_price_to_product", { title: "Asignar precio a producto 💰" });
 });
 
+router.get("/products/byDepartment", (req, res) => {
+  res.render("./products/products_bykeyDepartment", { title: "Productos por departamento 💰" });
+});
+
 export default router;
