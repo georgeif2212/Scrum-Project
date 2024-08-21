@@ -159,4 +159,23 @@ router.post('/products/assignPrice', async (req, res, next) => {
   }
 });
 
+router.post('/products/by-department', async (req, res, next) => {
+  try {
+    const { keyDepartment } = req.body;
+
+    // Verificar si el departamento existe
+    const department = await DepartmentModel.findOne({ keyDepartment });
+    if (!department) {
+      return res.status(404).json({ message: 'Clave del departamento no encontrada.' });
+    }
+
+    // Buscar productos en el departamento especificado
+    const products = await ProductModel.find({ keyDepartment });
+
+    res.status(200).json(products);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
