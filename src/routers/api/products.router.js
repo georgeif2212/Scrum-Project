@@ -1,11 +1,11 @@
-import { Router } from 'express';
-import ProductModel from '../../models/product.model.js';
-import DepartmentModel from '../../models/department.model.js';
-import mongoose from 'mongoose';
+import { Router } from "express";
+import ProductModel from "../../models/product.model.js";
+import DepartmentModel from "../../models/department.model.js";
+import mongoose from "mongoose";
 
 const router = Router();
 
-router.get('/products', async (req, res, next) => {
+router.get("/products", async (req, res, next) => {
   try {
     const products = await ProductModel.find({});
     res.status(200).json(products);
@@ -14,9 +14,11 @@ router.get('/products', async (req, res, next) => {
   }
 });
 
-router.get('/products/:uid', async (req, res, next) => {
+router.get("/products/:uid", async (req, res, next) => {
   try {
-    const { params: { uid } } = req;
+    const {
+      params: { uid },
+    } = req;
     const user = await ProductModel.findById(uid);
     if (!user) {
       return res.status(401).json({ message: `User id ${uid} not found 😨.` });
@@ -27,7 +29,7 @@ router.get('/products/:uid', async (req, res, next) => {
   }
 });
 
-router.post('/products/', async (req, res, next) => {
+router.post("/products/", async (req, res, next) => {
   try {
     const { body } = req;
     const user = await ProductModel.create(body);
@@ -37,9 +39,12 @@ router.post('/products/', async (req, res, next) => {
   }
 });
 
-router.put('/products/:uid', async (req, res, next) => {
+router.put("/products/:uid", async (req, res, next) => {
   try {
-    const { body, params: { uid } } = req;
+    const {
+      body,
+      params: { uid },
+    } = req;
     await ProductModel.updateOne({ _id: uid }, { $set: body });
     res.status(204).end();
   } catch (error) {
@@ -47,9 +52,11 @@ router.put('/products/:uid', async (req, res, next) => {
   }
 });
 
-router.delete('/products/:uid', async (req, res, next) => {
+router.delete("/products/:uid", async (req, res, next) => {
   try {
-    const { params: { uid } } = req;
+    const {
+      params: { uid },
+    } = req;
     await ProductModel.deleteOne({ _id: uid });
     res.status(204).end();
   } catch (error) {
@@ -57,36 +64,40 @@ router.delete('/products/:uid', async (req, res, next) => {
   }
 });
 
-router.post('/products/toDepartment', async (req, res, next) => {
+router.post("/products/toDepartment", async (req, res, next) => {
   try {
     const { idProduct, keyDepartment } = req.body;
     if (!mongoose.Types.ObjectId.isValid(idProduct)) {
-      return res.status(400).json({ message: 'ID del producto no es válido.' });
+      return res.status(400).json({ message: "ID del producto no es válido." });
     }
     const department = await DepartmentModel.findOne({ keyDepartment });
     if (!department) {
-      return res.status(404).json({ message: 'Clave del departamento no encontrada.' });
+      return res
+        .status(404)
+        .json({ message: "Clave del departamento no encontrada." });
     }
-
 
     const product = await ProductModel.findById(idProduct);
     if (!product) {
-      return res.status(404).json({ message: 'Id del producto no encontrada.' });
+      return res
+        .status(404)
+        .json({ message: "Id del producto no encontrada." });
     }
-    
+
     await ProductModel.updateOne(
       { _id: idProduct },
       { $set: { keyDepartment, price: -1 } }
     );
 
-    res.status(200).json({ message: 'Producto asignado al departamento correctamente.' });
+    res
+      .status(200)
+      .json({ message: "Producto asignado al departamento correctamente." });
   } catch (error) {
     next(error);
   }
 });
 
-
-router.post('/delete/products/toDepartment', async (req, res, next) => {
+router.post("/delete/products/toDepartment", async (req, res, next) => {
   try {
     const { idProduct, keyDepartment } = req.body;
 
@@ -101,13 +112,22 @@ router.post('/delete/products/toDepartment', async (req, res, next) => {
     // Verificar si el departamento existe
     const department = await DepartmentModel.findOne({ keyDepartment });
     if (!department) {
-      return res.status(404).json({ message: 'Clave del departamento no encontrada.' });
+      return res
+        .status(404)
+        .json({ message: "Clave del departamento no encontrada." });
     }
 
     // Verificar si el producto existe y pertenece al departamento
-    const product = await ProductModel.findOne({ _id: idProduct, keyDepartment });
+    const product = await ProductModel.findOne({
+      _id: idProduct,
+      keyDepartment,
+    });
     if (!product) {
-      return res.status(404).json({ message: 'Producto no encontrado en el departamento especificado.' });
+      return res
+        .status(404)
+        .json({
+          message: "Producto no encontrado en el departamento especificado.",
+        });
     }
 
     // Eliminar la asociación del producto con el departamento (borrar keyDepartment)
@@ -116,14 +136,18 @@ router.post('/delete/products/toDepartment', async (req, res, next) => {
       { $unset: { keyDepartment: "" } }
     );
 
-    res.status(200).json({ message: 'Asociación del producto con el departamento eliminada exitosamente.' });
+    res
+      .status(200)
+      .json({
+        message:
+          "Asociación del producto con el departamento eliminada exitosamente.",
+      });
   } catch (error) {
     next(error);
   }
 });
 
-
-router.post('/products/assignPrice', async (req, res, next) => {
+router.post("/products/assignPrice", async (req, res, next) => {
   try {
     const { keyDepartment, idProduct, price } = req.body;
 
@@ -138,41 +162,53 @@ router.post('/products/assignPrice', async (req, res, next) => {
     // Verificar si el departamento existe
     const department = await DepartmentModel.findOne({ keyDepartment });
     if (!department) {
-      return res.status(404).json({ message: 'Clave del departamento no encontrada.' });
+      return res
+        .status(404)
+        .json({ message: "Clave del departamento no encontrada." });
     }
 
     // Verificar si el producto existe y pertenece al departamento
-    const product = await ProductModel.findOne({ _id: idProduct, keyDepartment });
+    const product = await ProductModel.findOne({
+      _id: idProduct,
+      keyDepartment,
+    });
     if (!product) {
-      return res.status(404).json({ message: 'Producto no encontrado en el departamento especificado.' });
+      return res
+        .status(404)
+        .json({
+          message: "Producto no encontrado en el departamento especificado.",
+        });
     }
 
     // Asignar el precio al producto
-    await ProductModel.updateOne(
-      { _id: idProduct },
-      { $set: { price } }
-    );
+    await ProductModel.updateOne({ _id: idProduct }, { $set: { price } });
 
-    res.status(200).json({ message: 'Precio asignado exitosamente.' });
+    res.status(200).json({ message: "Precio asignado exitosamente." });
   } catch (error) {
     next(error);
   }
 });
 
-router.post('/products/by-department', async (req, res, next) => {
+router.post("/products/by-department", async (req, res, next) => {
   try {
     const { keyDepartment } = req.body;
 
     // Verificar si el departamento existe
     const department = await DepartmentModel.findOne({ keyDepartment });
     if (!department) {
-      return res.status(404).json({ message: 'Clave del departamento no encontrada.' });
+      return res
+        .status(404)
+        .json({ message: "Clave del departamento no encontrada." });
     }
 
     // Buscar productos en el departamento especificado
     const products = await ProductModel.find({ keyDepartment });
-
-    res.status(200).json(products);
+    const plainProducts = products.map((product) => product.toObject()); // Convertir los
+    res.render("./products/products_list", {
+      title: "Alta de productos 🖐️",
+      products: plainProducts,
+    });
+    
   } catch (error) {
     next(error);
   }

@@ -26,7 +26,8 @@ app.use("/api", productsRouter, departmentsRouter);
 app.use((error, req, res, next) => {
   const message = `Ah ocurrido un error desconocido 😨: ${error.message}`;
   console.log(message);
-  res.status(500).json({ status: "error", message });
+
+  res.render("error", { title: "Error", error: message });
 });
 
 export default app;
